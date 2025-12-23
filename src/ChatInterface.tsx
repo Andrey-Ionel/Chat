@@ -15,10 +15,10 @@ interface ChatInterfaceProps {
   currentUserId: string; // To differentiate sent/received messages visually
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
-  messages, 
-  onSendMessage, 
-  onDeleteMessage, 
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({
+  messages,
+  onSendMessage,
+  onDeleteMessage,
   isConnected,
   currentUserId
 }) => {
@@ -53,7 +53,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     <div className="chat-container">
       <header className="chat-header">
         <div className="header-content">
-          <h1>React Chat</h1>
+          <h1>Messenger</h1>
           <div className={`status-badge ${isConnected ? 'connected' : 'disconnected'}`}>
             <span className="status-dot"></span>
             {isConnected ? 'Connected' : 'Disconnected'}
@@ -74,8 +74,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   <div className="message-meta">
                     <span className="timestamp">{formatDate(msg.date)}</span>
                    {isMyMessage && (
-                      <button 
-                        onClick={() => onDeleteMessage(msg.messageId)} 
+                      <button
+                        onClick={() => onDeleteMessage(msg.messageId)}
                         className="delete-btn"
                         title="Delete message"
                       >
