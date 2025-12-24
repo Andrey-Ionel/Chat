@@ -99,6 +99,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           placeholder="Type a message..."
           disabled={!isConnected}
           className="chat-input"
+          maxLength={600}
         />
         <button type="submit" disabled={!isConnected || !inputText.trim()} className="send-btn">
           Send
