@@ -15,7 +15,7 @@ function App() {
     connectWebSocket();
     return () => {
       if (wsRef.current) {
-        wsRef.current.close();
+        wsRef.current?.close();
       }
     };
   }, []);
@@ -57,7 +57,7 @@ function App() {
   };
 
   const handleSendMessage = (text: string) => {
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+    if (!wsRef.current || wsRef.current?.readyState !== WebSocket.OPEN) return;
 
     const payload = {
       senderId: userId,
@@ -66,7 +66,7 @@ function App() {
       date: new Date().toString(),
     };
 
-    wsRef.current.send(JSON.stringify(payload));
+    wsRef.current?.send(JSON.stringify(payload));
   };
 
   const handleDeleteMessage = async (id: string) => {
