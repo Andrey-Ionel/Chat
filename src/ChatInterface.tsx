@@ -12,7 +12,7 @@ interface ChatInterfaceProps {
   onSendMessage: (text: string) => void;
   onDeleteMessage: (id: string) => void;
   isConnected: boolean;
-  currentUserId: string; // To differentiate sent/received messages visually
+  currentUserId: string;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -23,7 +23,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   currentUserId
 }) => {
   const [inputText, setInputText] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

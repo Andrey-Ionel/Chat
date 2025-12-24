@@ -6,9 +6,18 @@ const WS_URL = 'wss://9yfysp-8080.csb.app/';
 const API_URL = 'https://9yfysp-8080.csb.app/';
 
 function App() {
+  const getOrCreateUserId = () => {
+    const storedId = localStorage.getItem('userId');
+
+    if (storedId) return storedId;
+
+    const newId = crypto.randomUUID();
+    localStorage.setItem('userId', newId);
+    return newId;
+  }
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
-  const [userId] = useState(() => 'user-' + Math.random().toString(36).substr(2, 9));
+  const [userId] = useState(getOrCreateUserId);
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -34,10 +43,24 @@ function App() {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        if (Array.isArray(data)) {
-          setMessages(data);
-        } else {
-          console.log('Received non-array data:', data);
+
+        switch (data.type) {
+          case 'INIT_MESSAGES':
+            setMessages(data.payload);
+            break;
+
+          case 'NEW_MESSAGE':
+            setMessages(prev => [...prev, data.payload]);
+            break;
+
+          case 'DELETE_MESSAGE':
+            setMessages(prev =>
+                prev.filter(m => m.messageId !== data.payload)
+            );
+            break;
+
+          default:
+            console.warn('Unknown WS message type:', data);
         }
       } catch (e) {
         console.error('Error parsing message:', e);
@@ -71,8 +94,6 @@ function App() {
 
   const handleDeleteMessage = async (id: string) => {
     try {
-      setMessages(prev => prev.filter(m => m.messageId !== id));
-
       const response = await fetch(`${API_URL}${id}`, {
         method: 'DELETE',
       });
