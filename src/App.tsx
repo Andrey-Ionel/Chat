@@ -4,6 +4,7 @@ import './index.css';
 
 const WS_URL = 'wss://9yfysp-8080.csb.app/';
 const API_URL = 'https://9yfysp-8080.csb.app/';
+const OTHER_API = 'https://xmrmmn-8080.csb.app/'
 
 function App() {
   const getOrCreateUserId = () => {
@@ -103,6 +104,27 @@ function App() {
       }
     } catch (error) {
       console.error('Error deleting message:', error);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const response = await fetch(`${OTHER_API}users`, {
+        method: 'GET',
+        // headers: {
+        //   'content-type': 'application/json',
+        //   "Access-Control-Allow-Origin": "*",
+        //   // "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        //   // "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        //   // "Access-Control-Allow-Credentials": "true",
+        // }
+      });
+
+      if (!response?.ok) {
+        console.log('Failed');
+      }
+    } catch (error) {
+      console.error('Error', error);
     }
   };
 

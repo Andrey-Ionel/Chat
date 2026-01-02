@@ -62,31 +62,31 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </header>
 
       <div className="messages-area">
-        {messages.length === 0 ? (
+        {messages?.length === 0 ? (
           <div className="empty-state">No messages yet. Say hello!</div>
         ) : (
-          messages.map((msg) => {
-            const isMyMessage = msg.senderId === currentUserId;
-            return (
-              <div key={msg.messageId} className={`message-wrapper ${isMyMessage ? 'sent' : 'received'}`}>
-                <div className="message-bubble glass">
-                  <div className="message-content">{msg.message}</div>
-                  <div className="message-meta">
-                    <span className="timestamp">{formatDate(msg.date)}</span>
-                   {isMyMessage && (
-                      <button
-                        onClick={() => onDeleteMessage(msg.messageId)}
-                        className="delete-btn"
-                        title="Delete message"
-                      >
-                        ×
-                      </button>
-                    )}
+            !!messages?.length && messages?.map((msg) => {
+              const isMyMessage = msg.senderId === currentUserId;
+              return (
+                  <div key={msg.messageId} className={`message-wrapper ${isMyMessage ? 'sent' : 'received'}`}>
+                    <div className="message-bubble glass">
+                      <div className="message-content">{msg.message}</div>
+                      <div className="message-meta">
+                        <span className="timestamp">{formatDate(msg.date)}</span>
+                        {isMyMessage && (
+                            <button
+                                onClick={() => onDeleteMessage(msg.messageId)}
+                                className="delete-btn"
+                                title="Delete message"
+                            >
+                              ×
+                            </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })
+              );
+            })
         )}
         <div ref={messagesEndRef} />
       </div>
@@ -99,7 +99,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           placeholder="Type a message..."
           disabled={!isConnected}
           className="chat-input"
-          maxLength={600}
+          maxLength={500}
         />
         <button type="submit" disabled={!isConnected || !inputText.trim()} className="send-btn">
           Send
