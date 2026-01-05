@@ -2,9 +2,16 @@ import { useEffect, useState, useRef } from 'react';
 import { ChatInterface, type Message } from './ChatInterface';
 import './index.css';
 
+type WSMessage =
+    | { type: "INIT_MESSAGES"; payload: Message[] }
+    | { type: "NEW_MESSAGE"; payload: Message }
+    | { type: "DELETE_MESSAGE"; payload: string };
+
 const WS_URL = 'wss://9yfysp-8080.csb.app/';
 const API_URL = 'https://9yfysp-8080.csb.app/';
 const OTHER_API = 'https://xmrmmn-8080.csb.app/'
+
+const ROOMS = ["global", "support"];
 
 function App() {
   const getOrCreateUserId = () => {
@@ -16,6 +23,8 @@ function App() {
     localStorage.setItem('userId', newId);
     return newId;
   }
+
+  const [room, setRoom] = useState("global");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [userId] = useState(getOrCreateUserId);
@@ -38,12 +47,16 @@ function App() {
 
     ws.onopen = () => {
       console.log('Connected to WebSocket');
+      ws.send(JSON.stringify({
+        type: "JOIN_ROOM",
+        payload: { roomId: room },
+      }));
       setIsConnected(true);
     };
 
     ws.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data);
+        const data: WSMessage = JSON.parse(event.data);
 
         switch (data.type) {
           case 'INIT_MESSAGES':
