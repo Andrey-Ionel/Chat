@@ -1,11 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-export interface Message {
-  senderId: string;
-  messageId: string;
-  message: string;
-  date: string;
-}
+import type {Message} from "./types/wsTypes.ts";
 
 interface ChatInterfaceProps {
   messages: Message[];

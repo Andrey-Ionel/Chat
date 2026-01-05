@@ -1,11 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-import { ChatInterface, type Message } from './ChatInterface';
+import {useEffect, useRef, useState} from 'react';
+import {ChatInterface} from './ChatInterface';
 import './index.css';
+import type {Message, WSMessage} from "./types/wsTypes.ts";
 
-type WSMessage =
-    | { type: "INIT_MESSAGES"; payload: Message[] }
-    | { type: "NEW_MESSAGE"; payload: Message }
-    | { type: "DELETE_MESSAGE"; payload: string };
 
 const WS_URL = 'wss://9yfysp-8080.csb.app/';
 const API_URL = 'https://9yfysp-8080.csb.app/';
