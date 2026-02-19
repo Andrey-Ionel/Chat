@@ -72,8 +72,7 @@ export const MessageWrapper = styled.div<MessageWrapperProps>`
   display: flex;
   flex-direction: column;
   max-width: 80%;
-  
-  ${props => props.$isSent ? css`
+  ${props => (props as MessageWrapperProps).$isSent ? css`
     align-self: flex-end;
     align-items: flex-end;
   ` : css`
